@@ -28,7 +28,8 @@ ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 chmod 0600 ~/.ssh/authorized_keys
 
-# Test SSH to localhost: Close existing terminal windows and run these commands in a new terminal window.
+# Test SSH to localhost: Close existing terminal windows and run these commands in a new terminal window.  
+# Type "yes" if prompted to change the settings.
 ssh hdoop@localhost
 
 # Close all existing terminal windows and reboot
