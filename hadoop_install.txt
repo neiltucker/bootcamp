@@ -1,0 +1,155 @@
+###  Hadoop Installation
+###  Ubuntu:
+###  https://www.digitalocean.com/community/tutorials/how-to-install-hadoop-in-stand-alone-mode-on-ubuntu-20-04
+###  Windows: 
+###  https://medium.com/analytics-vidhya/hadoop-how-to-install-in-5-steps-in-windows-10-61b0e67342f8 
+###  https://cwiki.apache.org/confluence/display/HADOOP2/Hadoop2OnWindows
+
+# Connect as super user (root)
+# PS1="\u@\h:\w\$ "
+sudo su
+
+# Download Hadoop
+cd ~
+mkdir hadoop
+cd hadoop/
+wget https://downloads.apache.org/hadoop/common/hadoop-3.3.2/hadoop-3.3.2.tar.gz
+
+# Extract package
+tar -xvf hadoop-3.3.2.tar.gz
+
+# Add the following lines to the file: /root/.bashrc 
+export HADOOP_HOME=/root/hadoop/hadoop-3.3.2
+export HADOOP_INSTALL=$HADOOP_HOME
+export HADOOP_MAPRED_HOME=$HADOOP_HOME
+export HADOOP_COMMON_HOME=$HADOOP_HOME
+export HADOOP_HDFS_HOME=$HADOOP_HOME
+export YARN_HOME=$HADOOP_HOME
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
+export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib/native"
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export HDFS_NAMENODE_USER="root"
+export HDFS_DATANODE_USER="root"
+export HDFS_SECONDARYNAMENODE_USER="root"
+export YARN_RESOURCEMANAGER_USER="root"
+export YARN_NODEMANAGER_USER="root"
+
+# Persist the changes from the .bashrc file
+source /root/.bashrc
+
+# Add the following line to the file: $HADOOP_HOME/etc/hadoop/hadoop-env.sh 
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+
+# Add the following lines to the file: $HADOOP_HOME/etc/hadoop/core-site.xml (between the <configuration> and </configuration> tags
+<property>
+  <name>hadoop.tmp.dir</name>
+  <value>/tempdata</value>
+</property>
+<property>
+  <name>fs.default.name</name>
+  <value>hdfs://127.0.0.1:9000</value>
+</property>
+
+# Add the following lines to the file: $HADOOP_HOME/etc/hadoop/hdfs-site.xml (between the <configuration> and </configuration> tags
+<property>
+  <name>dfs.data.dir</name>
+  <value>/home/hiberstack/dfsdata/namenode</value>
+</property>
+<property>
+  <name>dfs.data.dir</name>
+  <value>/home/hiberstack/dfsdata/datanode</value>
+</property>
+<property>
+  <name>dfs.replication</name>
+  <value>1</value>
+</property>
+
+
+# Add the following lines to the file: $HADOOP_HOME/etc/hadoop/mapred-site.xml (between the <configuration> and </configuration> tags
+<property> 
+  <name>mapreduce.framework.name</name> 
+  <value>yarn</value> 
+</property>
+
+# Add the following lines to the file: $HADOOP_HOME/etc/hadoop/yarn-site.xml (between the <configuration> and </configuration> tags
+<property>
+  <name>yarn.nodemanager.aux-services</name>
+  <value>mapreduce_shuffle</value>
+</property>
+<property>
+  <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
+  <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+</property>
+<property>
+  <name>yarn.resourcemanager.hostname</name>
+  <value>127.0.0.1</value>
+</property>
+<property>
+  <name>yarn.acl.enable</name>
+  <value>0</value>
+</property>
+<property>
+  <name>yarn.nodemanager.env-whitelist</name>   
+  <value>JAVA_HOME,HADOOP_COMMON_HOME,HADOOP_HDFS_HOME,HADOOP_CONF_DIR,CLASSPATH_PERPEND_DISTCACHE,HADOOP_YARN_HOME,HADOOP_MAPRED_HOME</value>
+</property>
+
+
+# Format the NameNode (answer yes (y) to formatting prompt)
+# Stop all services with $HADOOP_HOME/sbin/stop-all.sh
+hdfs namenode -format
+
+# Start the Hadoop Services and verify they are running
+$HADOOP_HOME/sbin/start-all.sh
+jps
+
+# Verify Hadoop datanode is running 
+xhost si:localuser:root
+xdg-open http://127.0.0.1:9870
+
+
+### Optional MapReduce Tutorial Exercise: 
+### Use MapReduce job (WordCount.java) to count the words in a file (wiki_hadoop.txt)  
+
+# Download wiki_hadoop and WordCount.java
+cd /tmp
+wget https://raw.githubusercontent.com/neiltucker/ccc/main/wiki_hadoop.txt
+wget https://raw.githubusercontent.com/neiltucker/ccc/main/WordCount.java
+
+# Review the files used for word count (wiki_hadoop.txt) and job file (WordCount.java)
+cat wiki_hadoop.txt
+cat WordCount.java
+
+# Work with Hadoop file system
+cd /root/hadoop/hadoop-3.3.2/bin
+export PATH=${JAVA_HOME}/bin:${PATH}
+export HADOOP_CLASSPATH=${JAVA_HOME}/lib/tools.jar
+hadoop fs -ls /
+hadoop fs -mkdir /temp
+hadoop fs -mkdir /tmp
+hadoop fs -mkdir /user
+hadoop fs -ls /
+
+# Copy files to hadoop HDFS
+hadoop fs -put /tmp/wiki_hadoop.txt /temp/wiki_hadoop.txt
+hadoop fs -put /tmp/WordCount.java /temp/WordCount.java
+hadoop fs -ls /temp
+
+# Copy and compile WordCount.java to Hadoop bin folder
+cp /tmp/WordCount.java WordCount.java
+hadoop com.sun.tools.javac.Main WordCount.java
+jar cf wc.jar WordCount*.class
+
+# Perform a word count on the wiki_hadoop.txt file
+hadoop jar wc.jar WordCount /temp/wiki_hadoop.txt /temp/output
+
+# Verify that the output file with the word count was generated
+hadoop fs -ls /temp/output
+hadoop fs -cat /temp/output/part-r-00000
+
+### Try using the word count process on your own text file
+### If time permits, test your own process instead of Word Count
+reboot
+
+
+

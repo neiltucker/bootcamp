@@ -1,0 +1,79 @@
+###  MongoDB Installation
+
+### 1. Ubuntu Install:
+# Install Ubuntu Updates
+sudo apt update -y 
+sudo apt upgrade -y
+sudo apt-get install gnupg -y
+
+# Create mongodb-org-4.4.list file and update the package database
+echo "deb http://security.ubuntu.com/ubuntu focal-security main" | sudo tee /etc/apt/sources.list.d/focal-security.list
+sudo apt-get update -y
+sudo apt-get install libssl1.1 -y
+wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
+sudo apt-get update -y
+
+# Install MongoDB and MongoSH
+sudo apt-get install mongodb-org=4.4.8 mongodb-org-server=4.4.8 mongodb-org-shell=4.4.8 mongodb-org-mongos=4.4.8 mongodb-org-tools=4.4.8 -y
+sudo apt install mongosh -y
+
+# Start MongoDB 
+sudo systemctl enable mongod
+sudo systemctl start mongod
+systemctl status mongod
+# Verify that the status of mongod is "active (running)".  If necessary, use Ctrl+C to end the command.
+
+# Verify MongoDB and MongoSH are working
+mongosh --eval 'db.runCommand({ connectionStatus: 1 })'
+mongosh
+# Use the following code to create an admin account named "mongoAdmin" with a password of "Password1":
+use admin
+db.createUser(
+  {
+    user: "mongoAdmin",
+    pwd: "Password1",
+    roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
+  }
+)
+
+# Verify admin account was created
+db.system.users.find()
+exit
+
+# Learn more about using mongosh
+https://www.mongodb.com/docs/mongodb-shell/run-commands/
+
+# Install Compass.  Perform this step as a regular user.  Not root.  If errors persists, run the commands in a new terminal window.
+wget https://downloads.mongodb.com/compass/mongodb-compass_1.33.1_amd64.deb
+sudo dpkg -i mongodb-compass_1.33.1_amd64.deb
+mongodb-compass
+
+
+# Optional Steps: 
+1. Create a database and collection using mongodb-compass
+2. Create a MongoDB Database and collection with the CLI: https://www.mongodb.com/basics/create-database
+
+==========
+
+### 2. Windows Install:
+Install MongoDB on Windows: https://www.geeksforgeeks.org/how-to-install-mongodb-on-windows/
+Install MongoDB Compass:    https://www.geeksforgeeks.org/install-mongodb-compass-on-windows/?ref=rp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
