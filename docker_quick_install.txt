@@ -38,3 +38,29 @@ https://youtu.be/0UG2x2iWerk
 Become a Docker Power User with Visual Studio Code:
 https://youtu.be/sUZxIWDUicA
 
+=====
+### Flask app in Docker image
+
+1.  Place all files in separate folder (Dockerfile, app.py, orderdata.csv, requirements.txt)
+
+2.  Build image:  docker build --tag flask1
+
+3.  Verify image ("flask1") was created: docker images
+
+4.  Run the image: docker run -d -p 5000:5000 flask1
+
+5.  Confirm docker status and Container ID: docker ps
+
+6.  Run image app in browser: http://127.0.0.1:5000
+
+7.  Stop image: docker stop <Container ID>
+
+8.  Save image: docker save flask1 > /tmp/flask1.tar
+
+9.  Tag image: docker tag flask1 <account name>/<repo name>:<tag>
+
+10. Upload image to Docker Hub: docker push <account name>/<repo name>:<tag>
+ 
+11. Create container based web app on Azure or AWS using the Docker Hub image
+
+
