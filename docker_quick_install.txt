@@ -4,25 +4,32 @@ sudo apt install apt-transport-https ca-certificates curl software-properties-co
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt update -y
-apt-cache policy docker-ce
+sudo apt-cache policy docker-ce
 sudo apt install docker-ce -y
 
 
-===== Verify Docker is running =====
+===== Verify Docker is running (Use Ctrl+C to end systemctl session) =====
 systemctl status docker
-sudo systemctl start docker
+===== sudo systemctl start docker
+
 
 ===== Add user account to docker group =====
 sudo usermod -aG docker ${USER}
 reboot
 
-===== Test docker without Dockerfile =====
+===== After reboot, test docker without Dockerfile (Use port 8080) =====
 docker
 docker pull httpd
-xdg-open http://127.0.0.1:8080
 docker run --publish 8080:80 httpd
+===== Without closing this terminal window, open a new one for the following steps
+
+===== In a new terminal window, get information about the status of docker and its images =====
 docker images
 docker info
+
+
+===== Connect to the docker website using a browser or the command below (Use port 8080, the same port as used in the "docker run" command earlier) ===== 
+xdg-open http://127.0.0.1:8080
 
 
 How to containerize Python applications with Docker:
