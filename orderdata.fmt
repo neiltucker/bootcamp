@@ -1,0 +1,10 @@
+14.0
+8
+1       SQLCHAR            0       9999     ","      1     OrderID                   ""
+2       SQLCHAR            0       9999     ","      2     CustomerID                ""
+3       SQLCHAR            0       9999     ","      3     ManagerID                 ""
+4       SQLCHAR            0       9999     ","      4     Quantity                  ""
+5       SQLCHAR            0       9999     ","      5     Price                     ""
+6       SQLCHAR            0       9999     ","      6     Freight                   ""
+7       SQLCHAR            0       9999     ","      7     OrderDate                 ""
+8       SQLCHAR            0       9999     "\r\n"   8     ShippedDate               ""
