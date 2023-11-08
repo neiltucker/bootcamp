@@ -30,10 +30,6 @@ Stop-Process -ProcessName: Explorer -Force
 # Configure applications and Environment Variables
 $PrintToPDF = Get-WindowsOptionalFeature -Online -FeatureName Printing-PrintToPDFServices-Features
 if($PrintToPDF.State -ne "Enabled"){Enable-WindowsOptionalFeature -Online -Featurename Printing-PrintToPDFServices-Features -All}
-$PythonPath = $env:userprofile + "\AppData\Local\Programs\Python\Python39"
-$PythonScriptPath = $env:userprofile + "\AppData\Local\Programs\Python\Python39\Scripts"
-$env:Path = $env:Path + ";" + $PythonScriptPath
-$env:Path = $env:Path + ";" + $PythonPath
 
 # Finish Setup
 Start-Sleep 30

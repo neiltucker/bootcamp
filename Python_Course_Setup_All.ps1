@@ -6,7 +6,7 @@
 # 4. Enable PowerShell Script execution (e.g. Set-ExecutionPolicy Unrestricted)
 # 5. Copy the course setup file (094021Files1_0.zip) to the Desktop of the computer.
 
-# Copy Files to Work Folder
+# Copy Files to Work Folder for PLPJ160
 $WorkFolder = 'C:\094021Data\' 
 $Desktop = [Environment]::GetFolderPath("Desktop")
 $SetupFile = $Desktop + "\094021Files1_0.zip"
@@ -14,6 +14,15 @@ Get-ChildItem -Path $SetupFile -Recurse |  Unblock-File
 New-Item -Path C:\Temp -Type Directory -Force -ErrorAction "SilentlyContinue"
 Expand-Archive -LiteralPath $SetupFile -DestinationPath C:\Temp -Force -ErrorAction "SilentlyContinue"
 Copy-Item C:\Temp\094021Data\ -Destination $WorkFolder -Recurse 
+
+# Copy Files to Work Folder for PLPJ165
+$WorkFolder = 'C:\094022Data\' 
+$Desktop = [Environment]::GetFolderPath("Desktop")
+$SetupFile = $Desktop + "\094022Files1_0.zip"
+Get-ChildItem -Path $SetupFile -Recurse |  Unblock-File 
+New-Item -Path C:\Temp -Type Directory -Force -ErrorAction "SilentlyContinue"
+Expand-Archive -LiteralPath $SetupFile -DestinationPath C:\Temp -Force -ErrorAction "SilentlyContinue"
+Copy-Item C:\Temp\094022Data\ -Destination $WorkFolder -Recurse 
 
 #   Configure File Explorer Settings
 $VarWindowsExplorer = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced'
