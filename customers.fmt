@@ -1,0 +1,10 @@
+14.0
+8
+1       SQLCHAR            0       9999     ","      1     CustomerID               ""
+2       SQLCHAR            0       9999     ","      2     FirstName                ""
+3       SQLCHAR            0       9999     ","      3     LastName                 ""
+4       SQLCHAR            0       9999     ","      4     Phone                    ""
+5       SQLCHAR            0       9999     ","      5     Street                   ""
+6       SQLCHAR            0       9999     ","      6     City                     ""
+7       SQLCHAR            0       9999     ","      7     State                    ""
+8       SQLCHAR            0       9999     "\r\n"   8     ZIP                      ""
